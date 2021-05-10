@@ -12,7 +12,7 @@ The next key item was the price tab that is stationary on the left side. The pri
 
 I used a custom model call ProductScrollItem to add products to the Binding array for the custom ProductScroll view. You can also add a destination view by wrapping it with AnyView() to allow the main ContentView to navigate to the product's page. In the example I'm only passing the title of the shoes as a Text view.
 
-``
+```swift
 import SwiftUI
 
 struct ProductScrollItem: Identifiable {
@@ -25,7 +25,7 @@ struct ProductScrollItem: Identifiable {
     var backgroundColor:Color = .white
     
 }
-``
+```
 
 The example contains photos of Adidas shoes I downloaded from their website. I do not own the rights to these images and they are used purely for example purposes.
 
