@@ -1,0 +1,21 @@
+{
+  "images" : [
+    {
+      "filename" : "ZX_0000_Evolution_Shoes_White_GZ8500_HM1-140.jpg",
+      "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "3x"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
