@@ -22,6 +22,8 @@ struct ProductScroll: View {
     
     @State var destinationView:(AnyView) -> ()
     
+    @Environment(\.accessibilityEnabled) var accessibilityEnabled
+    
     var body: some View {
         GeometryReader { wrapView in
             ZStack {
@@ -29,29 +31,38 @@ struct ProductScroll: View {
                     
                     if items.count > 0 {
                         ScrollView(.vertical) {
-                            VStack(spacing: 0) {
-                                
-                                ForEach(items) { item in
-                                    GeometryReader { geo in
-                                        ZStack {
-                                            Rectangle()
-                                                .fill(item.backgroundColor)
-                                            
-                                            if item.image != nil {
-                                                item.image!
-                                                    .resizable()
-                                                    .aspectRatio(contentMode: item.imageMode)
-                                                    .frame(width: fullView.size.width)
+                            ScrollViewReader { value in
+                                VStack(spacing: 0) {
+                                    
+                                    ForEach(items) { item in
+                                        GeometryReader { geo in
+                                            ZStack {
+                                                Rectangle()
+                                                    .fill(item.backgroundColor)
+                                                
+                                                if item.image != nil {
+                                                    item.image!
+                                                        .resizable()
+                                                        .aspectRatio(contentMode: item.imageMode)
+                                                        .frame(width: fullView.size.width)
+                                                        .accessibility(label: Text("The \(item.title)"))
+                                                }
+                                                
+                                                Rectangle()
+                                                    .fill(Color.white)
+                                                    .opacity(getOpacity(fullProxy: fullView, itemProxy: geo, product: item))
+                                                
                                             }
                                             
-                                            Rectangle()
-                                                .fill(Color.white)
-                                                .opacity(getOpacity(fullProxy: fullView, itemProxy: geo, product: item))
-                                            
                                         }
-                                        
+                                        .frame(width: fullView.size.width, height: fullView.size.height/1.7)
+                                        .id(item.id)
+                                        .onTapGesture {
+                                            if accessibilityEnabled {
+                                                value.scrollTo(item.id)
+                                            }
+                                        }
                                     }
-                                    .frame(width: fullView.size.width, height: fullView.size.height/1.7)
                                 }
                                 
                             }
@@ -63,6 +74,7 @@ struct ProductScroll: View {
                                 .font(.system(size: fontSize))
                                 .fontWeight(.medium)
                                 .multilineTextAlignment(.center)
+                                .accessibility(label: Text("No Products Available"))
                         }
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                         
@@ -118,7 +130,7 @@ struct ProductScroll: View {
                     })
                     .buttonStyle(PlainButtonStyle())
                     .position(x: priceButtonExpanded ? expandedWidth/2 : normalWidth/2, y: wrapView.size.height/2)
-                    
+                    .accessibility(label: Text("The \(itemTitle) has a price of \(price)"))
                     
                     
                     
@@ -187,6 +199,10 @@ struct ProductScroll: View {
         
         
         return opacity
+    }
+    
+    func scrollToItem(id:UUID) {
+        
     }
     
 }
