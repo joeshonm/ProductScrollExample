@@ -7,21 +7,46 @@
 
 import SwiftUI
 
+/**
+    Presents a scroll view of products with the model ProductScrollItem.
+ */
 struct ProductScroll: View {
     
+    /// A Binding array of ProductScrollItem.
     @Binding var items:[ProductScrollItem]
+    
+    /// The starting width of the price button.
     @State var normalWidth:CGFloat = 120
+    
+    /// The expanded width of the price button when tapped.
     @State var expandedWidth:CGFloat = 160
+    
+    /// The base font size for product information.
     @State var fontSize:CGFloat = 12
+    
+    /// The scroll item height.
     @State var itemHeight:CGFloat = 200
+    
+    /// The price shown in the price button.
     @State var price:String = "N/a"
+    
+    /// Boolean to toggle the price button width.
     @State private var priceButtonExpanded:Bool = false
+    
+    /// Boolean to toggle the price info showing.
     @State private var priceInfoExpanded:Bool = false
+    
+    /// The current ProductScrollItem title shown in the info tab.
     @State private var itemTitle:String = ""
+    
+    /// The destination view of the buy now button.
     @State private var destination:AnyView = AnyView(EmptyView())
     
+    
+    /// The function that returns the destination view in a closure to the parent view.
     @State var destinationView:(AnyView) -> ()
     
+    /// Detect if the user has accessiblity enabled to enable helpful features.
     @Environment(\.accessibilityEnabled) var accessibilityEnabled
     
     var body: some View {
@@ -58,6 +83,8 @@ struct ProductScroll: View {
                                         .frame(width: fullView.size.width, height: fullView.size.height/1.7)
                                         .id(item.id)
                                         .onTapGesture {
+                                            
+                                            // double tap to scroll to item when in voice over mode
                                             if accessibilityEnabled {
                                                 value.scrollTo(item.id)
                                             }
@@ -176,6 +203,13 @@ struct ProductScroll: View {
         
     }
     
+    /**
+     This function returns the item opacity and sets the item info for the price button.
+        - Parameter fullProxy: The GeometryProxy of the scroll view.
+        - Parameter itemProxy: The GeometryProxy of the ProductScrollItem in the scroll view.
+        - Parameter product: The ProductScrollItem data.
+        - Returns: The opacity as a Double.
+     */
     private func getOpacity(fullProxy:GeometryProxy, itemProxy:GeometryProxy, product:ProductScrollItem) -> Double {
         
         let middle = fullProxy.size.height/2 + 40
@@ -201,18 +235,6 @@ struct ProductScroll: View {
         return opacity
     }
     
-    func scrollToItem(id:UUID) {
-        
-    }
-    
 }
 
-//struct ProductScroll_Previews: PreviewProvider {
-//    @State static var products = [
-//        ProductScrollItem(price: 100),
-//        ProductScrollItem(price: 100)
-//    ]
-//    static var previews: some View {
-//        ProductScroll(items: $products)
-//    }
-//}
+
